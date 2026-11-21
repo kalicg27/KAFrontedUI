@@ -67,7 +67,7 @@ Configured in `KAFrontedUI.Build.cs`:
 
 ---
 
-## 🚀 Quick Start / Integration Flow
+## 🚀 Process Overview - How To?
 
 1. **Configure Gameplay Tags:** Define your widget stack hierarchy under `Frontend.WidgetStack` (e.g., `Frontend.WidgetStack.Frontend`, `Frontend.WidgetStack.GameMenu`, `Frontend.WidgetStack.Modal`).
 2. **Initialize Primary Layout:** Create a Blueprint subclass of `UWidget_PrimaryLayout` containing your named widget stacks and register it at startup via `UFrontendUISybsystem::RegisterCreatedPrimaryLayoutWidget`.

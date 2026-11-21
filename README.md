@@ -53,7 +53,7 @@ Source/KAFrontedUI/
 │       ├── Widget_ActivatableBase.h
 │       ├── Widget_ConfirmScreen.h
 │       └── Widget_PrimaryLayout.h
-```text
+```
 ---
 
 ## 🛠️ Module Dependencies & Tech Stack

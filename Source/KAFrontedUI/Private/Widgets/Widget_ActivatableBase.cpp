@@ -2,8 +2,10 @@
 
 
 #include "Widgets/Widget_ActivatableBase.h"
+
 #include "Controllers/FrontedUIPlayerController.h"
 
+// Widget_ActivatableBase
 AFrontedUIPlayerController* UWidget_ActivatableBase::GetOwningFrontendUIPlayerController()
 {
 	if (!CachedOwningFrontendPC.IsValid())

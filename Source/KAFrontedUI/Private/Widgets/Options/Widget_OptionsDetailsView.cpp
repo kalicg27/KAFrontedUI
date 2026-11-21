@@ -2,12 +2,14 @@
 
 
 #include "Widgets/Options/Widget_OptionsDetailsView.h"
+
 #include "CommonTextBlock.h"
 #include "CommonLazyImage.h"
 #include "CommonRichTextBlock.h"
 
 #include "Widgets/Options/DataObjects/ListDataObject_Base.h"
 
+//Widget_OptionsDetailsView
 void UWidget_OptionsDetailsView::UpdateDetailsViewInfo(UListDataObject_Base* InDataObject, const FString& InEntryWidgetClassName)
 {
 	if (!InDataObject)
@@ -20,6 +22,10 @@ void UWidget_OptionsDetailsView::UpdateDetailsViewInfo(UListDataObject_Base* InD
 	{
 		CommonLazyImage_DescriptionImage->SetBrushFromLazyTexture(InDataObject->GetSoftDecriptionImage());
 		CommonLazyImage_DescriptionImage->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+	else
+	{
+		CommonLazyImage_DescriptionImage->SetVisibility(ESlateVisibility::Collapsed);
 	}
 	CommonRichText_Description->SetText(InDataObject->GetDescrtiptionRichText());
 	const FString DynamicDetails = FString::Printf(TEXT("Data object class: <Bold>%s</>\n\nEntry Widget Class:<Bold>%s</>"),
@@ -39,6 +45,8 @@ void UWidget_OptionsDetailsView::ClearDetailsViewInfo()
 	CommonRichText_DisabledReason->SetText(FText::GetEmpty());
 }
 
+//UE
+//UUserWidget
 void UWidget_OptionsDetailsView::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();

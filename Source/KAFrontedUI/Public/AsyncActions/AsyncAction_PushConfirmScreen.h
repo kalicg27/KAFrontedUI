@@ -1,4 +1,5 @@
 // RoadMap Komronbek Alimkulov - Allright 
+//Parent - UBlueprintAsyncActionBase
 
 #pragma once
 
@@ -8,18 +9,19 @@
 
 #include "AsyncAction_PushConfirmScreen.generated.h"
 
+//DELEGATES
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnConfirmScreenButtonClickedDelate, EConfirmScreenButtonType, ClickedButtonType);
 
-/**
- * 
- */
+
 UCLASS()
 class KAFRONTEDUI_API UAsyncAction_PushConfirmScreen : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
-	
-public:
 
+//METHODS
+
+//AsyncAction - PushConfirmScreen
+public:
 	UFUNCTION(BlueprintCallable, meta = (WorldContext = "WorldContextObject", HidePin = "WorldContextObject", BlueprintInternalUseOnly = "true", DisplayName = "Show Confirmation Screen"))
 	static UAsyncAction_PushConfirmScreen* PushConfirmScreen(
 		const UObject* WorldContextObject,
@@ -28,9 +30,14 @@ public:
 		FText InScreenMessage
 	);
 
-	//Begin of UBlueprintAsyncActionBase interface
+//UE
+public:
+	//from UBlueprintAsyncActionBase
 	virtual void Activate() override;
-	//end of UBlueprintAsyncActionBase interface;
+
+//PROPERTIES
+//AsyncAction - PushConfirmScreen
+public:
 	UPROPERTY(BlueprintAssignable) 
 	FOnConfirmScreenButtonClickedDelate OnButtonClicked;
 private:

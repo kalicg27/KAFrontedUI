@@ -1,10 +1,10 @@
 // RoadMap Komronbek Alimkulov - Allright 
 
-
 #include "FrontendFunctionLibrary.h"
+
 #include "FrontendSettings/KAFrontendSettings.h"
 
-
+//FrontendFunctionLibrary - base
 TSoftClassPtr<UWidget_ActivatableBase> UFrontendFunctionLibrary::GetFrontendSoftWidgetClassByTag(UPARAM(meta = (Categories = "Frontend.Widget")) FGameplayTag InWidgetTag)
 {
 	const UKAFrontendSettings* FrontendDeveloperSettings = GetDefault<UKAFrontendSettings>();
@@ -13,5 +13,12 @@ TSoftClassPtr<UWidget_ActivatableBase> UFrontendFunctionLibrary::GetFrontendSoft
 
 	return FrontendDeveloperSettings->FrontendWidgetMap.FindRef(InWidgetTag);
 
+}
+
+TSoftObjectPtr<UTexture2D> UFrontendFunctionLibrary::GetOptionsSoftImageByTag(FGameplayTag InImageTag)
+{
+	const UKAFrontendSettings* FrontendDeveloperSettings = GetDefault<UKAFrontendSettings>();
+	checkf(FrontendDeveloperSettings->OptionsScreenSoftImageMap.Contains(InImageTag), TEXT("could not find image bro , please choose valid tag, your tag that failed is %s"), *InImageTag.ToString());
+	return FrontendDeveloperSettings->OptionsScreenSoftImageMap.FindRef(InImageTag);
 
 }

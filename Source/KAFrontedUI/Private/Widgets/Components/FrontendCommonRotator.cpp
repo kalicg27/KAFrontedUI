@@ -2,6 +2,7 @@
 
 
 #include "Widgets/Components/FrontendCommonRotator.h"
+
 #include "CommonTextBlock.h"
 
 void UFrontendCommonRotator::SetSelectedOptionByText(const FText& InTextOption)

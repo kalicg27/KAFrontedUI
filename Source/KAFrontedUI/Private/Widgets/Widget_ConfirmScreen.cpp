@@ -2,11 +2,13 @@
 
 
 #include "Widgets/Widget_ConfirmScreen.h"
+
 #include "CommonTextBlock.h"
 #include "Components/DynamicEntryBox.h"
 #include "Widgets/Components/FrontendCommonButtonBase.h"
 #include "ICommonInputModule.h"
 
+// ConfirmScreenInfoObject (Data Object)
 UConfirmScreenInfoObject* UConfirmScreenInfoObject::CreateOKScreen(const FText& InScreenTtle, const FText& InScreenMsg)
 {
 	UConfirmScreenInfoObject* InfoObject = NewObject<UConfirmScreenInfoObject>();
@@ -59,6 +61,7 @@ UConfirmScreenInfoObject* UConfirmScreenInfoObject::CreateOkCanselScreen(const F
 	return InfoObject;
 }
 
+//Widget Confirmatin Screen , Main widget
 void UWidget_ConfirmScreen::InitConfirmScreen(UConfirmScreenInfoObject* InScreenInfoObject, TFunction<void(EConfirmScreenButtonType)> ClickedButtonCallback)
 {
 	check(InScreenInfoObject && CommonTextBlock_Title && CommonTextBlock_Message && DynamicEntryBox_Buttons);

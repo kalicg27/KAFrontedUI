@@ -2,6 +2,7 @@
 
 
 #include "Subsystem/FrontendUISybsystem.h"
+
 #include "Engine/AssetManager.h"
 #include "Widgets/Widget_PrimaryLayout.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
@@ -11,7 +12,10 @@
 #include "FrontendFunctionLibrary.h"
 
 #include "FrontendDebugHelper.h"
+
+//UISybsystem
 //this function is used to Get Subsustem access. we are first getting it from Gengine - then we are returning sybsystem by casting to our class.
+//WorldContextObject
 UFrontendUISybsystem* UFrontendUISybsystem::Get(const UObject* WorldContextObject)
 {
 	if (GEngine)
@@ -23,6 +27,8 @@ UFrontendUISybsystem* UFrontendUISybsystem::Get(const UObject* WorldContextObjec
 	return nullptr;
 }
 
+//UE
+//From - USubsystem 
 bool UFrontendUISybsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	if (!CastChecked<UGameInstance>(Outer)->IsDedicatedServerInstance())
@@ -34,6 +40,8 @@ bool UFrontendUISybsystem::ShouldCreateSubsystem(UObject* Outer) const
 	
 	return false;
 }
+
+//UISybsystem
 
 void UFrontendUISybsystem::RegisterCreatedPrimaryLayoutWidget(UWidget_PrimaryLayout* InCreatedWidget)
 {

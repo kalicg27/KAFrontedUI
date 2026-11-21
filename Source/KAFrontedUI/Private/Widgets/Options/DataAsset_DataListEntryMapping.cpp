@@ -4,6 +4,7 @@
 #include "Widgets/Options/DataAsset_DataListEntryMapping.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Base.h"
 
+//DataASset_DataListEntryMapping
 TSubclassOf<UWidget_ListEntry_Base> UDataAsset_DataListEntryMapping::FindEntryWidgetClassByDataObject(UListDataObject_Base* InDataObject) const
 {
 	check(InDataObject);

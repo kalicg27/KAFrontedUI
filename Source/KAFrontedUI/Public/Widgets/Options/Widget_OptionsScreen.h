@@ -1,4 +1,5 @@
 // RoadMap Komronbek Alimkulov - Allright 
+//Parent - UWidget_ActivatableBase
 
 #pragma once
 
@@ -8,29 +9,21 @@
 
 #include "Widget_OptionsScreen.generated.h"
 
+//Forward Declarations
 class UOptionsDataRegistry;
 class UFrontendTabListWidgetBase;
 class UFrontendCommonListView;
 class UWidget_OptionsDetailsView;
 class UListDataObject_Base;
-/**
- * 
- */
-UCLASS(Abstract, BlueprintType, meta = (DistableNativeTick))
+
+
+UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class KAFRONTEDUI_API UWidget_OptionsScreen : public UWidget_ActivatableBase
 {
 	GENERATED_BODY()
 
-protected:
-	//begin UUserWidget INterface
-	virtual void NativeOnInitialized() override;
-	//end UUserWidget INterface
-	// 
-	//begin UCommonActivatableWidget INterface
-	virtual void NativeOnActivated() override;
-	virtual void NativeOnDeactivated() override;
-	//end UCommonActivatableWidget INterface
-
+//METHODS
+//Widget_OptionsScreen
 private:
 	UOptionsDataRegistry* GetOrCreateDataRegistry();
 
@@ -47,7 +40,19 @@ private:
 
 	void OnListViewListDataModified(UListDataObject_Base* ModifiedData, EOptionslistDataModifyReason ModifyReason);
 
-	//********** Bound WIdgets ************;
+//UE
+protected:
+	//from UUserWidget
+	virtual void NativeOnInitialized() override;
+	
+	//from UCommonActivatableWidget
+	virtual void NativeOnActivated() override;
+	virtual void NativeOnDeactivated() override;
+
+	virtual UWidget* NativeGetDesiredFocusTarget() const override;
+
+//BIND WIDGETS
+private:
 	UPROPERTY(meta = (BindWidget))
 	UFrontendTabListWidgetBase* TabListWidget_OptionsTabs;
 
@@ -56,18 +61,22 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UWidget_OptionsDetailsView* DetailsView_ListEntryInfo;
-	//********** Bound WIdgets ************;
 
+
+//PROPERTIES
+private:
 	//handle the creation of data in the option screen. Direct access to this variable is forbidden.
 	UPROPERTY(Transient)
 	UOptionsDataRegistry* CreatedOwningDataRegistry;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Frontend OPtion Screen", meta = (RowType = "/Script/CommonUI.CommonInputActionDataBase"))
 	FDataTableRowHandle ResetAction;
-	
+
 	FUIActionBindingHandle ResetActionHandle;
 
 	UPROPERTY(Transient)
 	TArray<UListDataObject_Base*> ResettableDataArray;
+
+	bool bIsResettingData = false;
 
 };

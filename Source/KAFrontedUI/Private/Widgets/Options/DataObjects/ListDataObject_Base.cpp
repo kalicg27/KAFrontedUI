@@ -4,6 +4,7 @@
 #include "Widgets/Options/DataObjects/ListDataObject_Base.h"
 #include "FrontendSettings/FrontendGameUserSettings.h"
 
+//ListDataObject_Base
 void UListDataObject_Base::InitDataObject()
 {
 	OnDataObjectInitialized();

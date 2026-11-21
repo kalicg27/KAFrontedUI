@@ -4,7 +4,7 @@
 #include "Widgets/Options/OptionsDataInteractionHelper.h"
 #include "FrontendSettings/FrontendGameUserSettings.h"
 
-
+//OptionsData_InteractionHelper
 FOptionsDataInteractionHelper::FOptionsDataInteractionHelper(const FString& InSetterOrGetterFuncPath)
 	: CachedDynamicFunctionPath(InSetterOrGetterFuncPath)
 {

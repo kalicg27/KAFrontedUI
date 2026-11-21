@@ -2,12 +2,16 @@
 
 
 #include "Widgets/Components/FrontendCommonListView.h"
+
 #include "Editor/WidgetCompilerLog.h"
 #include "Widgets/Options/DataAsset_DataListEntryMapping.h"
 #include "Widgets/Options/LIstEntries/Widget_ListEntry_Base.h"
 #include "Widgets/Options/DataObjects/ListDataObject_Base.h"
+#include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
+//UE
 
+//FrontendCommon - ListView
 UUserWidget& UFrontendCommonListView::OnGenerateEntryWidgetInternal(UObject* Item, TSubclassOf<UUserWidget> DesiredEntryClass, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	if (IsDesignTime())
@@ -24,6 +28,14 @@ UUserWidget& UFrontendCommonListView::OnGenerateEntryWidgetInternal(UObject* Ite
 	}
 }
 
+//From ListViewBase
+bool UFrontendCommonListView::OnIsSelectableOrNavigableInternal(UObject* FirstSelectedItem)
+{
+	return FirstSelectedItem->IsA<UListDataObject_Collection>(); 
+}
+
+//UE
+//From UWidget
 #if WITH_EDITOR	
 void UFrontendCommonListView::ValidateCompiledDefaults(IWidgetCompilerLog& CompileLog) const
 {

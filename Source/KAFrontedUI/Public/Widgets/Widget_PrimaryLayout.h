@@ -1,5 +1,5 @@
 // RoadMap Komronbek Alimkulov - Allright 
-
+//Parent - UCommonUserWidget
 #pragma once
 
 #include "CoreMinimal.h"
@@ -11,18 +11,22 @@
  */
 class UCommonActivatableWidgetContainerBase;
 
-UCLASS(Abstract, BlueprintType, meta= (DistableNativeTick))
+UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class KAFRONTEDUI_API UWidget_PrimaryLayout : public UCommonUserWidget
 {
 	GENERATED_BODY()
-	
+
+//Methods	
+//Base Primary Layout 
 public:
 	UCommonActivatableWidgetContainerBase* FindWidgetStackByTag(const FGameplayTag& InTag) const;
 
 protected:
+	//Initialize the Stack - Registration 
 	UFUNCTION(BlueprintCallable)
 	void RegisterWidgetStack(UPARAM(meta=(Categories="Frontend.WidgetStack")) FGameplayTag InStackTag, UCommonActivatableWidgetContainerBase* InStack);
 
+//Properties
 private:
 	UPROPERTY(Transient)
 	TMap < FGameplayTag, UCommonActivatableWidgetContainerBase*> RegisteredWidgetStackMap;

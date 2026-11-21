@@ -2,8 +2,10 @@
 
 
 #include "AsyncActions/AsyncAction_PushConfirmScreen.h"
+
 #include "Subsystem/FrontendUISybsystem.h"
 
+//AsyncAction - PushConfirmScreen
 UAsyncAction_PushConfirmScreen* UAsyncAction_PushConfirmScreen::PushConfirmScreen(const UObject* WorldContextObject, EConfirmScreenType ScreenType, FText InScreenTitle, FText InScreenMessage)
 {
 	if (GEngine)
@@ -24,6 +26,8 @@ UAsyncAction_PushConfirmScreen* UAsyncAction_PushConfirmScreen::PushConfirmScree
 	return nullptr;
 }
 
+//UE
+//from UBlueprintAsyncActionBase
 void UAsyncAction_PushConfirmScreen::Activate()
 {
 	UFrontendUISybsystem::Get(CachedOwningWorld.Get())->PushConfirmScreenToModalStackAsync(

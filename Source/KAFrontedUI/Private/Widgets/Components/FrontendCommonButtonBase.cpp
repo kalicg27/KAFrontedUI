@@ -2,9 +2,11 @@
 
 
 #include "Widgets/Components/FrontendCommonButtonBase.h"
+
 #include "CommonTextBlock.h"
 #include "Subsystem/FrontendUISybsystem.h"
 
+//Frontend CommonButton_Base
 void UFrontendCommonButtonBase::SetButtonText(FText InText)
 {
 	if (CommonTextBlock_ButtonText && !InText.IsEmpty())
@@ -13,6 +15,17 @@ void UFrontendCommonButtonBase::SetButtonText(FText InText)
 	}
 }
 
+FText UFrontendCommonButtonBase::GetButtonDisplayText() const
+{
+	if (CommonTextBlock_ButtonText)
+	{
+		return CommonTextBlock_ButtonText->GetText();
+	}
+	return FText();
+}
+
+//UE
+//from UUserWidget
 void UFrontendCommonButtonBase::NativePreConstruct()
 {
 	Super::NativePreConstruct();
@@ -20,6 +33,7 @@ void UFrontendCommonButtonBase::NativePreConstruct()
 	SetButtonText(ButtonDisplayText);
 }
 
+//from UCommonButtonBase
 void UFrontendCommonButtonBase::NativeOnCurrentTextStyleChanged()
 {
 	Super::NativeOnCurrentTextStyleChanged();
@@ -27,7 +41,6 @@ void UFrontendCommonButtonBase::NativeOnCurrentTextStyleChanged()
 	{
 		CommonTextBlock_ButtonText->SetStyle(GetCurrentTextStyleClass());
 	}
-
 
 }
 

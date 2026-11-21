@@ -1,31 +1,36 @@
 // RoadMap Komronbek Alimkulov - Allright 
-
+//Parent - UUserWidget
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+
 #include "Widget_OptionsDetailsView.generated.h"
+
+//Forward Declarations
 class UCommonTextBlock;
 class UCommonLazyImage;
 class UCommonRichTextBlock;
 class UListDataObject_Base;
-/**
- * 
- */
-UCLASS(Abstract, BlueprintType, meta = (DistableNativeTick))
+
+
+UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class KAFRONTEDUI_API UWidget_OptionsDetailsView : public UUserWidget
 {
 	GENERATED_BODY()
 
+//METHODS
+//Widget_OptionsDetailsView
 public:
 	void UpdateDetailsViewInfo(UListDataObject_Base* InDataObject, const FString& InEntryWidgetClassName = FString());
 	void ClearDetailsViewInfo();
 
+//UE
 protected:
-	//begin UUserWidget INterface
+	//from UUserWidget
 	virtual void NativeOnInitialized() override;
-	//end UUserWidget INterface
 
+//BIND WIDGETS
 private:
 	//bound widgets
 	UPROPERTY(meta = (BindWidget))
@@ -43,7 +48,5 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	UCommonRichTextBlock* CommonRichText_DisabledReason;
 
-
-	//bound widgets
 	
 };

@@ -3,6 +3,7 @@
 
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 
+//ListDataObject_Collection
 void UListDataObject_Collection::AddChildListData(UListDataObject_Base* InChildListData)
 {
     //notife the child list data to init itself
@@ -12,6 +13,7 @@ void UListDataObject_Collection::AddChildListData(UListDataObject_Base* InChildL
     ChildListDataArray.Add(InChildListData);
 }
 
+//UListDataObject_Base
 TArray<UListDataObject_Base*> UListDataObject_Collection::GetAllChildListData() const
 {
     return ChildListDataArray;

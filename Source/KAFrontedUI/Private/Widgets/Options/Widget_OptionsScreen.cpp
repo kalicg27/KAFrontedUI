@@ -11,10 +11,13 @@
 #include "FrontendSettings/FrontendGameUserSettings.h"
 #include "Widgets/Options/LIstEntries/Widget_ListEntry_Base.h"
 #include "Widgets/Options/Widget_OptionsDetailsView.h"
+#include "Subsystem/FrontendUISybsystem.h"
+#include "Widgets/Components/FrontendCommonButtonBase.h"
 
 #include "FrontendDebugHelper.h"
 
-
+//UE
+//from UUserWidget
 void UWidget_OptionsScreen::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
@@ -43,6 +46,7 @@ void UWidget_OptionsScreen::NativeOnInitialized()
 	CommonListView_OptionsList->OnItemSelectionChanged().AddUObject(this, &ThisClass::OnListViewItemSelected);
 }
 
+//from UCommonActivatableWidget
 void UWidget_OptionsScreen::NativeOnActivated()
 {
 	Super::NativeOnActivated();
@@ -62,12 +66,26 @@ void UWidget_OptionsScreen::NativeOnActivated()
 	}
 }
 
+//from UCommonActivatableWidget
 void UWidget_OptionsScreen::NativeOnDeactivated()
 {
 	Super::NativeOnDeactivated();
 	UFrontendGameUserSettings::Get()->ApplySettings(true);
 }
 
+UWidget* UWidget_OptionsScreen::NativeGetDesiredFocusTarget() const
+{
+	if (UObject* SelectedObject = CommonListView_OptionsList->GetSelectedItem())
+	{
+		if (UUserWidget* SelectedEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem(SelectedObject))
+		{
+			return SelectedEntryWidget;
+		}
+	}
+	return Super::NativeGetDesiredFocusTarget();
+}
+
+//Widget_OptionsScreen
 UOptionsDataRegistry* UWidget_OptionsScreen::GetOrCreateDataRegistry()
 {
 	if (!CreatedOwningDataRegistry)
@@ -82,7 +100,56 @@ UOptionsDataRegistry* UWidget_OptionsScreen::GetOrCreateDataRegistry()
 
 void UWidget_OptionsScreen::OnResetBoundActionTriggered()
 {
-	Debug::Print(TEXT("Reset bound action triggered"));
+	//Debug::Print(TEXT("Reset bound action triggered"));
+	if (ResettableDataArray.IsEmpty())
+	{
+		return;
+	}
+
+	UCommonButtonBase* SelectedTabButton = TabListWidget_OptionsTabs->GetTabButtonBaseByID(TabListWidget_OptionsTabs->GetActiveTab());
+	const FString SelectedTabButtonName =  CastChecked<UFrontendCommonButtonBase>(SelectedTabButton)->GetButtonDisplayText().ToString();
+
+	UFrontendUISybsystem::Get(this)->PushConfirmScreenToModalStackAsync(
+		EConfirmScreenType::YesNo,
+		FText::FromString(TEXT("Reset")),
+		FText::FromString(TEXT("Are you sure bro, really? think about it!")	+ SelectedTabButtonName +TEXT(" tab")),
+		[this](EConfirmScreenButtonType ClickedButtonType)
+		{
+			if (ClickedButtonType !=EConfirmScreenButtonType::Confirmed)
+			{
+				return;
+			}
+			bIsResettingData = true;
+
+			bool bHasDataFailedToReset = false;
+			for (UListDataObject_Base* DataToReset : ResettableDataArray)
+			{
+				if (!DataToReset)
+				{
+					continue;
+				}
+
+				if (DataToReset->TryResetBackToDefaultValue())
+				{
+					Debug::Print(DataToReset->GetDataDisplayName().ToString()+ TEXT(" was reset fine"));
+				}
+				else
+				{
+					bHasDataFailedToReset = true;
+					Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" failed to reset bro"));
+				}
+			}
+
+			if (!bHasDataFailedToReset)
+			{
+				ResettableDataArray.Empty();
+				RemoveActionBinding(ResetActionHandle);
+			}
+			bIsResettingData = false;
+			
+		}
+	);
+
 }
 
 void UWidget_OptionsScreen::OnBackBoundActionTriggered()
@@ -117,7 +184,6 @@ void UWidget_OptionsScreen::OnOptionsTabSelected(FName TabID)
 		{
 			FoundListSourceItem->OnListDataModified.AddUObject(this, &ThisClass::OnListViewListDataModified);
 		}
-		
 
 		if (FoundListSourceItem->CanResetBackToDefaultValue())
 		{
@@ -204,10 +270,11 @@ FString UWidget_OptionsScreen::TryGetEntryWidgetClassName(UObject* InOwningListI
 
 void UWidget_OptionsScreen::OnListViewListDataModified(UListDataObject_Base* ModifiedData, EOptionslistDataModifyReason ModifyReason)
 {
-	if (!ModifiedData)
+	if (!ModifiedData || bIsResettingData)
 	{
 		return;
 	}
+
 	if (ModifiedData->CanResetBackToDefaultValue())
 	{
 		ResettableDataArray.AddUnique(ModifiedData);

@@ -2,9 +2,40 @@
 
 
 #include "Widgets/Options/DataObjects/ListDataObject_String.h"
+
 #include "Widgets/Options/OptionsDataInteractionHelper.h"
 #include "FrontendDebugHelper.h"
 
+//UListDataObject_Base
+void UListDataObject_String::OnDataObjectInitialized()
+{
+	if (!AvailableOptionsStringArray.IsEmpty())
+	{
+		CurrentStringValue = AvailableOptionsStringArray[0];
+	}
+
+	//TODO read from the saved string value and use it to set the CurrentStringValue
+	if (HasDefaultValue())
+	{
+		CurrentStringValue = GetDefaultValuesAsString();
+	}
+	
+	if (DataDynamicGetter)
+	{
+		if (!DataDynamicGetter->GetValueAsString().IsEmpty())
+		{
+			CurrentStringValue = DataDynamicGetter->GetValueAsString();
+		}
+	}
+
+
+	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
+	{
+		CurrentDisplayText = FText::FromString(TEXT("Invalid Option"));
+	}
+}
+
+//ListDataObject_String
 void UListDataObject_String::AddDynamicOption(const FString& InStringValue, const FText& InDisplayText)
 {
 	AvailableOptionsStringArray.Add(InStringValue);
@@ -81,28 +112,27 @@ void UListDataObject_String::BackToPreviousOption()
 	NotifyListDataModified(this);
 }
 
-void UListDataObject_String::OnDataObjectInitialized()
+void UListDataObject_String::OnRotatorInitiatedValueChange(const FText& InNewSelectedText)
 {
-	if (!AvailableOptionsStringArray.IsEmpty())
-	{
-		CurrentStringValue = AvailableOptionsStringArray[0];
-	}
-
-	//TODO read from the saved string value and use it to set the CurrentStringValue
-	if (DataDynamicGetter)
-	{
-		if (!DataDynamicGetter->GetValueAsString().IsEmpty())
+	const int32 FoundIndex =  AvaialableOptionsTextArray.IndexOfByPredicate(
+		[InNewSelectedText](const FText& AvailableText)->bool
 		{
-			CurrentStringValue = DataDynamicGetter->GetValueAsString();
+			return AvailableText.EqualTo(InNewSelectedText);
+		}
+	);
+	if (FoundIndex != INDEX_NONE && AvailableOptionsStringArray.IsValidIndex(FoundIndex))
+	{
+		CurrentDisplayText = InNewSelectedText;
+		CurrentStringValue = AvailableOptionsStringArray[FoundIndex];
+
+		if (DataDynamicSetter)
+		{
+			DataDynamicSetter->SetValueFromString(CurrentStringValue);
+			NotifyListDataModified(this);
 		}
 	}
-
-
-	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
-	{
-		CurrentDisplayText = FText::FromString(TEXT("Invalid Option"));
-	}
 }
+
 
 bool UListDataObject_String::CanResetBackToDefaultValue() const
 {

@@ -2,9 +2,11 @@
 
 
 #include "Widgets/Components/FrontendTabListWidgetBase.h"
+
 #include "Editor/WidgetCompilerLog.h"
 #include "Widgets/Components/FrontendCommonButtonBase.h"
 
+//FrontendTabListWidgetBase
 void UFrontendTabListWidgetBase::RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName)
 {
 	RegisterTab(InTabID, TabButtonEntryWidgetClass, nullptr);
@@ -16,6 +18,8 @@ void UFrontendTabListWidgetBase::RequestRegisterTab(const FName& InTabID, const 
 
 #if WITH_EDITOR	
 
+//UE
+//From UWidget
 void UFrontendTabListWidgetBase::ValidateCompiledDefaults(IWidgetCompilerLog& CompileLog) const
 {
 	Super::ValidateCompiledDefaults(CompileLog);

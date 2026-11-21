@@ -2,14 +2,19 @@
 
 
 #include "Widgets/Options/OptionsDataRegistry.h"
+
 #include "Widgets/Options/DataObjects/ListDataObject_Collection.h"
 #include "Widgets/Options/DataObjects/ListDataObject_String.h"
 #include "Widgets/Options/OptionsDataInteractionHelper.h"
 #include "FrontendSettings/FrontendGameUserSettings.h"
+#include "FrontendFunctionLibrary.h"
+#include "FrontendGameplayTags.h"
 
+//MACROS
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FOptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UFrontendGameUserSettings, SetterOrGetterFuncName))
 
+//OptionsDataRegistry
 void UOptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer)
 {
 	InitGameplayCollectionTab();
@@ -30,9 +35,45 @@ TArray<UListDataObject_Base*> UOptionsDataRegistry::GetListSourceItemsBySelected
 	checkf(FoundTabCollectionPtr, TEXT("NO Valid tab dounf under the ID %s"), *InSelectedTabID.ToString()); 
 
 	UListDataObject_Collection* FoundTabCollection = *FoundTabCollectionPtr;
-	return FoundTabCollection->GetAllChildListData();
+	//return FoundTabCollection->GetAllChildListData();
+	TArray< UListDataObject_Base*> AllChildListItems;
+	for (UListDataObject_Base* ChildListData : FoundTabCollection->GetAllChildListData())
+	{
+		if (!ChildListData)
+		{
+			continue;
+		}
+		AllChildListItems.Add(ChildListData);
+		if (ChildListData->HasAnyChildListData())
+		{
+			FindChildListDataRecursively(ChildListData, AllChildListItems);
+		}
+	}
+	return AllChildListItems;
 }
 
+void UOptionsDataRegistry::FindChildListDataRecursively(UListDataObject_Base* InParentData, TArray<UListDataObject_Base*>& OutFoundChildListData) const
+{
+	if (!InParentData || !InParentData->HasAnyChildListData())
+	{
+		return;
+	}
+	for (UListDataObject_Base* SubChildListData : InParentData->GetAllChildListData())
+	{
+		if (!SubChildListData)
+		{
+			continue;
+		}
+		OutFoundChildListData.Add(SubChildListData);
+		if (SubChildListData->HasAnyChildListData())
+		{
+			FindChildListDataRecursively(SubChildListData, OutFoundChildListData);
+		}
+	}
+	
+}
+
+//Initialize Collection tabs
 void UOptionsDataRegistry::InitGameplayCollectionTab()
 {
 	UListDataObject_Collection* GameplayTabCollection = NewObject<UListDataObject_Collection>();
@@ -62,7 +103,7 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 
 		GameDifficulty->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
 		GameDifficulty->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
-
+		//GameDifficulty->SetSoftDecriptionImage(UFrontendFunctionLibrary::GetOptionsSoftImageByTag(FrontendGameplayTags::Frontend_Image_Test2Image));
 		GameDifficulty->SetDefaultValueFromString(TEXT("Normal"));
 
 		GameDifficulty->SetShouldApplySettingsImmediately(true);
@@ -85,7 +126,15 @@ void UOptionsDataRegistry::InitGameplayCollectionTab()
 
 		TestItem->AddDynamicOption(TEXT("TestOne"), FText::FromString(TEXT("TestOne")));
 		TestItem->AddDynamicOption(TEXT("TestTwo"), FText::FromString(TEXT("TestTwo")));
-		TestItem->AddDynamicOption(TEXT("TestOne"), FText::FromString(TEXT("TestOne")));
+		TestItem->AddDynamicOption(TEXT("TestThree"), FText::FromString(TEXT("Test Three")));
+		TestItem->AddDynamicOption(TEXT("TestFour"), FText::FromString(TEXT("Test Four")));
+		TestItem->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentTestMode));
+		TestItem->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentTestMode));
+		TestItem->SetSoftDecriptionImage(UFrontendFunctionLibrary::GetOptionsSoftImageByTag(FrontendGameplayTags::Frontend_Image_TestImage));
+
+		TestItem->SetDefaultValueFromString(TEXT("TestOne"));
+
+		TestItem->SetShouldApplySettingsImmediately(true);
 
 		GameplayTabCollection->AddChildListData(TestItem);
 	}
@@ -98,6 +147,25 @@ void UOptionsDataRegistry::InitAudioCollectionTab()
 	UListDataObject_Collection* AudioTabCollection = NewObject<UListDataObject_Collection>();
 	AudioTabCollection->SetDataID(FName("AudioTabCollection"));
 	AudioTabCollection->SetDataDisplayName(FText::FromString(TEXT("Audio")));
+
+	
+	//Volume Category 
+	{
+		UListDataObject_Collection* VolumeCategoryCollection= NewObject<UListDataObject_Collection>();
+		VolumeCategoryCollection->SetDataID(FName("VolumeCategoryCollection"));
+		VolumeCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Volume")));
+		AudioTabCollection->AddChildListData(VolumeCategoryCollection);
+		//test item
+		{
+			UListDataObject_String* TestItem = NewObject<UListDataObject_String>();
+			TestItem->SetDataID(FName("TestItem"));
+			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Item Bro")));
+
+			VolumeCategoryCollection->AddChildListData(TestItem);
+		}
+	}
+
+
 	RegisteredOptionsTabCollections.Add(AudioTabCollection);
 }
 

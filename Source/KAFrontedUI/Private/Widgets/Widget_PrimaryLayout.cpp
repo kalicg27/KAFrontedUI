@@ -2,7 +2,9 @@
 
 
 #include "Widgets/Widget_PrimaryLayout.h"
+
 #include "FrontendDebugHelper.h"
+
 
 UCommonActivatableWidgetContainerBase* UWidget_PrimaryLayout::FindWidgetStackByTag(const FGameplayTag& InTag) const
 {
@@ -16,8 +18,9 @@ void UWidget_PrimaryLayout::RegisterWidgetStack(UPARAM(meta = (Categories = "Fro
 	{
 		if (!RegisteredWidgetStackMap.Contains(InStackTag))
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("HELLOOO HERE is working ")); //that was just to check whether it works
 			RegisteredWidgetStackMap.Add(InStackTag, InStack);
+			
+			//UE_LOG(LogTemp, Warning, TEXT("HELLOOO HERE is working ")); //that was just to check whether it works
 			//Debug::Print(TEXT("WIdget stack registered under the tag ") + InStackTag.ToString()); //removed becouse we stored in subsytem
 		}
 	}

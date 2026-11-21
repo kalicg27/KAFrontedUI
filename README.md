@@ -4,7 +4,7 @@ A C++ driven Frontend UI architecture built for Unreal Engine using **CommonUI**
 
 ---
 
-## 🎯 Main Purpose
+## Main Purpose
 
 Modern Unreal Engine menus require non-blocking asset loading, seamless gamepad/keyboard/mouse focus routing, and scalable settings management. **KAFrontedUI** solves this by providing:
 
@@ -15,7 +15,7 @@ Modern Unreal Engine menus require non-blocking asset loading, seamless gamepad/
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```text
 Source/KAFrontedUI/
@@ -56,7 +56,7 @@ Source/KAFrontedUI/
 ```
 ---
 
-## 🛠️ Module Dependencies & Tech Stack
+## Module Dependencies & Tech Stack
 
 Configured in `KAFrontedUI.Build.cs`:
 
@@ -67,7 +67,7 @@ Configured in `KAFrontedUI.Build.cs`:
 
 ---
 
-## 🚀 Process Overview - How To?
+## Process Overview - How To?
 
 1. **Configure Gameplay Tags:** Define your widget stack hierarchy under `Frontend.WidgetStack` (e.g., `Frontend.WidgetStack.Frontend`, `Frontend.WidgetStack.GameMenu`, `Frontend.WidgetStack.Modal`).
 2. **Initialize Primary Layout:** Create a Blueprint subclass of `UWidget_PrimaryLayout` containing your named widget stacks and register it at startup via `UFrontendUISybsystem::RegisterCreatedPrimaryLayoutWidget`.

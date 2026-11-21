@@ -34,11 +34,11 @@ Modern Unreal Engine menus require non-blocking asset loading, seamless gamepad/
 ### Stage 3: CommonUI Primitives & Modal Dialogs
 - **Custom CommonButton (`UFrontendCommonButtonBase`):** Extended `UCommonButtonBase` supporting dynamic text formatting (automatic uppercase toggle), synchronized `UCommonTextBlock` styling, and hover/unhover description broadcasts to the UI subsystem.
 - **Modal Confirmation Screen (`UWidget_ConfirmScreen` & `UConfirmScreenInfoObject`):** Reusable modal dialog system supporting `OK`, `Yes/No`, and `OK/Cancel` layouts via dynamic button entry boxes (`UDynamicEntryBox`) and `TFunction` / async latent callbacks (`UAsyncAction_PushConfirmScreen`).
-
-### Next Stage: Options Pipeline & Persistent Settings *(In Progress)*
 - **Data-Driven Options Registry (`UOptionsDataRegistry`):** Modular tab initialization (`Gameplay`, `Audio`, `Video`, `Controls`, `Cheats`) decoupled from UI list entries.
 - **Custom GameUserSettings (`UFrontendGameUserSettings`):** Persistent save/load reflection bindings via `FOptionsDataInteractionHelper`.
-- *(Reserved for upcoming modules and polish...)*
+
+### Next Stage: Options Settings Tab *(In Progress)*
+- *(for future bro...)*
 
 ---
 ## System Architecture

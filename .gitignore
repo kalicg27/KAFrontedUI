@@ -50,6 +50,8 @@ SourceArt/**/*.tga
 # Binary Files
 Binaries/*
 Plugins/**/Binaries/*
+Content/**/UltraDynamicSky/*
+Content/**/SCK_Casual01*
 
 # Builds
 Build/*

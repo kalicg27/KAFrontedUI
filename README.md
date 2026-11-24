@@ -3,6 +3,7 @@
 A C++ driven Frontend UI architecture built for Unreal Engine using **CommonUI**, **GameplayTags**, **EnhancedInput**, and **Asynchronous Latent Actions**. Designed to decouple UI navigation, modal confirmation dialogs, and game settings from hardcoded widget references.
 
 In This repo is mainly about c++ code. The visual part is showen in Video (soon will be uploaded) 
+![Menu Stage 02 Preview](./Menu_stage_02.png)
 ---
 
 ## Main Purpose

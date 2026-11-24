@@ -31,7 +31,7 @@ UUserWidget& UFrontendCommonListView::OnGenerateEntryWidgetInternal(UObject* Ite
 //From ListViewBase
 bool UFrontendCommonListView::OnIsSelectableOrNavigableInternal(UObject* FirstSelectedItem)
 {
-	return FirstSelectedItem->IsA<UListDataObject_Collection>(); 
+	return !FirstSelectedItem->IsA<UListDataObject_Collection>(); 
 }
 
 //UE

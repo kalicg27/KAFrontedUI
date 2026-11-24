@@ -5,6 +5,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraActor.h"
+#include "FrontendSettings/FrontendGameUserSettings.h"
 
 //UE
 void AFrontedUIPlayerController::OnPossess(APawn* aPawn)
@@ -18,6 +19,14 @@ void AFrontedUIPlayerController::OnPossess(APawn* aPawn)
 	if (!FoundCameras.IsEmpty())
 	{
 		SetViewTarget(FoundCameras[0]);
+	}
+
+	UFrontendGameUserSettings* GameUserSettings= UFrontendGameUserSettings::Get();
+
+	if (GameUserSettings->GetLastCPUBenchmarkResult() == -1.f || GameUserSettings->GetLastGPUBenchmarkResult())
+	{
+		GameUserSettings->RunHardwareBenchmark();
+		GameUserSettings->ApplyHardwareBenchmarkResults();
 	}
 
 }

@@ -3,6 +3,15 @@
 
 #include "FrontendSettings/FrontendGameUserSettings.h"
 
+UFrontendGameUserSettings::UFrontendGameUserSettings()
+	: OverallVolume(0.5f)
+	, MusicVolume(0.5f)
+	,SoundFXVolume(0.5f)
+	,bAllowBackgroundAudio(false)
+	,bShouldUseHDRAudioMode(false)
+{
+}
+
 UFrontendGameUserSettings* UFrontendGameUserSettings::Get()
 {
 	if (GEngine)
@@ -11,4 +20,32 @@ UFrontendGameUserSettings* UFrontendGameUserSettings::Get()
 	}
 
 	return nullptr;
+}
+
+void UFrontendGameUserSettings::SetOverallVolume(float InVolume)
+{
+	OverallVolume = InVolume;
+
+	//the controlling the volume action goes here
+
+}
+
+void UFrontendGameUserSettings::SetMusicVolume(float InVolume)
+{
+	MusicVolume = InVolume;
+}
+
+void UFrontendGameUserSettings::SetSoundFXVolume(float InVolume)
+{
+	SoundFXVolume = InVolume;
+}
+
+void UFrontendGameUserSettings::SetAllowBackgroundAudio(bool bIsAllowed)
+{
+	bAllowBackgroundAudio = bIsAllowed;
+}
+
+void UFrontendGameUserSettings::SetUseHDRAudioMode(bool bIsAllowed)
+{
+	bShouldUseHDRAudioMode = bIsAllowed;
 }

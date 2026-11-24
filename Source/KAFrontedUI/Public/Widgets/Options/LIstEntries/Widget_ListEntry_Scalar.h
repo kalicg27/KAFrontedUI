@@ -5,11 +5,15 @@
 
 #include "CoreMinimal.h"
 #include "Widgets/Options/LIstEntries/Widget_ListEntry_Base.h"
+
+
 #include "Widget_ListEntry_Scalar.generated.h"
 
 //Forward Declarations
 class UCommonNumericTextBlock;
 class UAnalogSlider;
+class UListDataObject_Scalar;
+//class FOptionsDataInteractionHelper;
 
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class KAFRONTEDUI_API UWidget_ListEntry_Scalar : public UWidget_ListEntry_Base
@@ -19,12 +23,19 @@ class KAFRONTEDUI_API UWidget_ListEntry_Scalar : public UWidget_ListEntry_Base
 //METHODS
 
 //Widget_ListEntry_String
-
+private:
+	UFUNCTION()
+	void OnSliderValueChanged(float Value);
+	
+	UFUNCTION()
+	void OnSliderMouseCaptureBegin();
 
 //UListDataObject_Base
 protected:
 	virtual void OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject) override;
 	virtual void OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionslistDataModifyReason ModifyReason) override;
+
+
 
 //UE
 protected:
@@ -39,4 +50,6 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UAnalogSlider* AnalogSlider_SettingSlider;
 	
+	UPROPERTY(Transient)
+	UListDataObject_Scalar* CachedOwningScalarDataObject;
 };

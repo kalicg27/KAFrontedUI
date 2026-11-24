@@ -12,6 +12,10 @@ class KAFRONTEDUI_API UFrontendGameUserSettings : public UGameUserSettings
 {
 	GENERATED_BODY()
 	
+//STRUCT
+public:
+	UFrontendGameUserSettings();
+
 //METHODS
 //FrontendGameUsetSettings
 public:
@@ -31,15 +35,59 @@ public:
 	void SetCurrentTestMode(const FString& InNewMode) { CurrentTestMode = InNewMode; }
 	//gameplay collection tab
 
-	
+	//Audio Tab
+	UFUNCTION()
+	float GetOverallVolume() const { return OverallVolume; }
+
+	UFUNCTION()
+	void SetOverallVolume(float InVolume);
+
+	UFUNCTION()
+	float GetMusicVolume() const { return MusicVolume; }
+
+	UFUNCTION()
+	void SetMusicVolume(float InVolume);
+
+	UFUNCTION()
+	float GetSoundFXVolume() const { return SoundFXVolume; }
+
+	UFUNCTION()
+	void SetSoundFXVolume(float InVolume);
+
+	UFUNCTION()
+	bool GetAllowBackgroundAuido() const { return bAllowBackgroundAudio; }
+
+	UFUNCTION()
+	void SetAllowBackgroundAudio(bool bIsAllowed);
+
+	UFUNCTION()
+	bool GetUseHDRAudioMode() const { return bShouldUseHDRAudioMode; }
+
+	UFUNCTION()
+	void SetUseHDRAudioMode(bool bIsAllowed);
 
 //PROPERTIES
 private:
+	//Gameplay tab
 	UPROPERTY(Config)
 	FString CurrentGameDifficulty;
 
 	UPROPERTY(Config)
 	FString CurrentTestMode;
 
+	//Audio Tab
+	UPROPERTY(Config)
+	float OverallVolume;
+
+	UPROPERTY(Config)
+	float MusicVolume;
+
+	UPROPERTY(Config)
+	float SoundFXVolume;
 	
+	UPROPERTY(Config)
+	bool bAllowBackgroundAudio;
+
+	UPROPERTY(Config)
+	bool bShouldUseHDRAudioMode;
 };

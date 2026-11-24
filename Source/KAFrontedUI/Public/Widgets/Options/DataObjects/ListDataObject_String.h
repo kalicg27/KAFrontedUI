@@ -43,3 +43,65 @@ protected:
 	
 	
 };
+
+//CHILD CLASSES
+
+UCLASS()
+class KAFRONTEDUI_API UListDataObject_StringBool : public UListDataObject_String
+{
+	GENERATED_BODY()
+
+//METHODS
+private:
+	void TryInitBoolValues();
+
+public:
+	void OverrideTrueDisplayText(const FText& InNewTrueDisplayText);
+	void OverrideFalseDisplayText(const FText& InNewFalseDisplayText);
+
+	void SetTrueAsDefaultValue();
+	void SetFalseAsDefaultValue();
+
+//UE
+protected:
+	//from UListDataObject_String 
+	virtual void OnDataObjectInitialized() override;
+
+//PROPERTIES
+private:
+	const FString TrueString = TEXT("true");
+	const FString FalseString = TEXT("false");
+
+};
+
+UCLASS()
+class KAFRONTEDUI_API UListDataObject_StringEnum : public UListDataObject_String
+{
+	GENERATED_BODY()
+
+//PROPERTIES
+public:
+	template<typename EnumType> 
+	void AddEnumOptions(EnumType InEnumOption, const FText& InDisplayText)
+	{
+		const UEnum* StaticEnumOption = StaticEnum<EnumType>();
+		const FString ConvertedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption);
+
+		AddDynamicOption(ConvertedEnumString, InDisplayText);
+	}
+
+	template<typename EnumType>
+	EnumType GetCurrentValueAsEnum() const
+	{
+		const UEnum* StaticEnumOption = StaticEnum<EnumType>();
+		return (EnumType)StaticEnumOption->GetValueByNameString(CurrentStringValue);
+	
+	}
+
+	template<typename EnumType>
+	void SetDefaultValueFromEnumOption(EnumType InEnumOption)
+	{
+		const UEnum* StaticEnumOption = StaticEnum<EnumType>();
+		const FString ConvertedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption);
+	}
+};

@@ -70,7 +70,8 @@ void UWidget_OptionsScreen::NativeOnActivated()
 void UWidget_OptionsScreen::NativeOnDeactivated()
 {
 	Super::NativeOnDeactivated();
-	UFrontendGameUserSettings::Get()->ApplySettings(true);
+	UFrontendGameUserSettings::Get()->ApplyNonResolutionSettings();
+	UFrontendGameUserSettings::Get()->SaveConfig();
 }
 
 UWidget* UWidget_OptionsScreen::NativeGetDesiredFocusTarget() const

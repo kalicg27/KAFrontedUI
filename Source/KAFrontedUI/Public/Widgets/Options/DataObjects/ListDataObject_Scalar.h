@@ -38,6 +38,7 @@ private:
 protected:
 	virtual bool CanResetBackToDefaultValue() const override;
 	virtual bool TryResetBackToDefaultValue()  override;
+	virtual void OnEditDependencyDataModified(UListDataObject_Base* ModifiedDependencyData, EOptionslistDataModifyReason ModifyReason) override;
 
 //PROPERTIES
 private:

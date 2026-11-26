@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
 #include "FrontedTypes/FrontendEnumTypes.h"
+#include "FrontedTypes/FrontendStructTypes.h"
 
 #include "ListDataObject_Base.generated.h"
 
@@ -48,17 +49,29 @@ public:
 	virtual bool CanResetBackToDefaultValue() const { return false; }
 	virtual bool TryResetBackToDefaultValue() { return false; }
 
+	void AddEditCondition(const FOptionsDataEditConditionDescriptor& InEditCondition);
+
+	void AddEditDependecyData(UListDataObject_Base* InDependencyData);
+	bool IsDataCurrentlyEditable();
+
 protected:
 	//empty in base class,, the child classes should override it to handle the initilazed neede accordingly;
 	virtual void OnDataObjectInitialized();
 
 	virtual void NotifyListDataModified(UListDataObject_Base* ModifiedData, EOptionslistDataModifyReason ModifyReason = EOptionslistDataModifyReason::DirectlyModified);
 
+	//the child class should override this to allow the value be set to the forced string value
+	virtual bool CanSetToForcedStringValue(const FString& InForcedValue) const { return false; }
+	virtual void OnSetToForcedStringValue(const FString& InForcedValue){ }
+
+	//this function will be called when the value of the dependcy data has changed . the child class can override; super call is expected;
+	virtual void OnEditDependencyDataModified(UListDataObject_Base* ModifiedDependencyData, EOptionslistDataModifyReason ModifyReason);
+
 //DELEGATES
 public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UListDataObject_Base*, EOptionslistDataModifyReason)
 	FOnListDataModifiedDelegate OnListDataModified;
-
+	FOnListDataModifiedDelegate OnDependencyDataModified;
 //PROPERTIES
 private:
 	FName DataID;
@@ -71,4 +84,7 @@ private:
 	UListDataObject_Base* ParentData;
 
 	bool bShouldApplyChangeImmediatly = false;
+
+	UPROPERTY(Transient)
+	TArray<FOptionsDataEditConditionDescriptor> EditConditionDescArray;
 };

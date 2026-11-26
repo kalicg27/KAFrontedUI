@@ -49,3 +49,20 @@ void UFrontendGameUserSettings::SetUseHDRAudioMode(bool bIsAllowed)
 {
 	bShouldUseHDRAudioMode = bIsAllowed;
 }
+
+float UFrontendGameUserSettings::GetCurrentDisplayGamma() const
+{
+	if (GEngine)
+	{
+		return GEngine->GetDisplayGamma();
+	}
+	return 0.0f;
+}
+
+void UFrontendGameUserSettings::SetCurrentDisplayGamma(float InNewGamma)
+{
+	if (GEngine)
+	{
+		GEngine->DisplayGamma = InNewGamma;
+	}
+}

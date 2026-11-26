@@ -66,6 +66,13 @@ public:
 	UFUNCTION()
 	void SetUseHDRAudioMode(bool bIsAllowed);
 
+	//display category settings
+	UFUNCTION()
+	float GetCurrentDisplayGamma() const;
+
+	UFUNCTION()
+	void SetCurrentDisplayGamma(float InNewGamma);
+
 //PROPERTIES
 private:
 	//Gameplay tab

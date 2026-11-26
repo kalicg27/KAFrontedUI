@@ -31,6 +31,7 @@ private:
 protected:
 	virtual void OnOwningListDataObjectSet(UListDataObject_Base* InOwningListDataObject) override;
 	virtual void OnOwningListDataObjectModified(UListDataObject_Base* OwningModifiedData, EOptionslistDataModifyReason ModifyReason) override;
+	virtual void OnToggleEditableState(bool bIsEditable) override;
 
 //UE
 protected:

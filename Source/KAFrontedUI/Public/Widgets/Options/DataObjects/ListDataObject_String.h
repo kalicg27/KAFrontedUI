@@ -62,6 +62,9 @@ public:
 	void SetTrueAsDefaultValue();
 	void SetFalseAsDefaultValue();
 
+	virtual bool CanSetToForcedStringValue(const FString& InForcedValue) const override;
+	virtual void OnSetToForcedStringValue(const FString& InForcedValue) override;
+
 //UE
 protected:
 	//from UListDataObject_String 
@@ -103,5 +106,21 @@ public:
 	{
 		const UEnum* StaticEnumOption = StaticEnum<EnumType>();
 		const FString ConvertedEnumString = StaticEnumOption->GetNameStringByValue(InEnumOption);
+		SetDefaultValueFromString(ConvertedEnumString);
 	}
+};
+
+UCLASS()
+class KAFRONTEDUI_API UListDataObject_StringInteger : public UListDataObject_String
+{
+	GENERATED_BODY()
+
+public:
+	void AddIntegerOption(int32 InIntegerValue, const FText& InDisplayText);
+
+//UListDataObject_StringBool
+protected:
+	//from UListDataObject_String 
+	virtual void OnDataObjectInitialized() override;
+	virtual void OnEditDependencyDataModified(UListDataObject_Base* ModifiedDependencyData, EOptionslistDataModifyReason ModifyReason) override;
 };

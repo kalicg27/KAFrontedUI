@@ -576,7 +576,61 @@ void UOptionsDataRegistry::InitVideoCollectionTab()
 		}
 	}
 
+	//Advanced Graphics
+	{
+		UListDataObject_Collection* AdvancedGraphicsCategoryCollect = NewObject<UListDataObject_Collection>();
+		AdvancedGraphicsCategoryCollect->SetDataID(FName("AdvancedGraphicsCategoryCollect"));
+		AdvancedGraphicsCategoryCollect->SetDataDisplayName(FText::FromString(TEXT("Advanced Graphics")));
+
+		VIdeoTabCollection->AddChildListData(AdvancedGraphicsCategoryCollect);
+		//vertocal sync
+		{
+			UListDataObject_StringBool* VerticalSync = NewObject<UListDataObject_StringBool>();
+			VerticalSync->SetDataID(FName("VerticalSync"));
+			VerticalSync->SetDataDisplayName(FText::FromString(TEXT("V-Sync")));
+			VerticalSync->SetDescrtiptionRichText(FText::FromString(TEXT("Here goes my dicription for Vertical sync mode, change your advance settings and glasses bro")));
+			VerticalSync->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(IsVSyncEnabled));
+			VerticalSync->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetVSyncEnabled));
+			VerticalSync->SetFalseAsDefaultValue();
+			VerticalSync->SetShouldApplySettingsImmediately(true);
+
+			FOptionsDataEditConditionDescriptor FullscreenOnlyCondition;
+			FullscreenOnlyCondition.SetEditConfitionFunc(
+				[CreatedWindowMode]()->bool
+				{
+					return CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::Fullscreen;
+				}
+			);
+			FullscreenOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Dissabled>Bro dis feature works onlu in 'Window Mode'</>"));
+			FullscreenOnlyCondition.SetDisabledForcedStringValue(TEXT("false"));
+			VerticalSync->AddEditCondition(FullscreenOnlyCondition);
+
+			AdvancedGraphicsCategoryCollect->AddChildListData(VerticalSync);
+		}
+		
+		//frame rate limit
+		{
+			UListDataObject_String* FrameRateLimit = NewObject<UListDataObject_String>();
+			FrameRateLimit->SetDataID(FName("FrameRateLimit"));
+			FrameRateLimit->SetDataDisplayName(FText::FromString(TEXT("Frame Rate Limit")));
+			FrameRateLimit->SetDescrtiptionRichText(FText::FromString(TEXT("Here goes my dicription for Frame Rate Limit, change your Frame Rate Limit bro")));
+			FrameRateLimit->AddDynamicOption(LexToString(30.f), FText::FromString(TEXT("30 FPS")));
+			FrameRateLimit->AddDynamicOption(LexToString(60.f), FText::FromString(TEXT("60 FPS")));
+			FrameRateLimit->AddDynamicOption(LexToString(90.f), FText::FromString(TEXT("90 FPS")));
+			FrameRateLimit->AddDynamicOption(LexToString(120.f), FText::FromString(TEXT("120 FPS")));
+			FrameRateLimit->AddDynamicOption(LexToString(0.f), FText::FromString(TEXT("No Limits Bro")));
+			FrameRateLimit->SetDefaultValueFromString(LexToString(0.f));
+			FrameRateLimit->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFrameRateLimit));
+			FrameRateLimit->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFrameRateLimit));
+			FrameRateLimit->SetShouldApplySettingsImmediately(true);
+
+			AdvancedGraphicsCategoryCollect->AddChildListData(FrameRateLimit);
+
+		}
+	}
+
 	RegisteredOptionsTabCollections.Add(VIdeoTabCollection);
+
 }
 
 void UOptionsDataRegistry::InitControlCollectionTab()
